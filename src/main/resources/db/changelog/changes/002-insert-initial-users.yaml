@@ -1,0 +1,83 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002
+      author: system
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: admin
+              - column:
+                  name: password
+                  value: $2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa
+              - column:
+                  name: email
+                  value: admin@example.com
+              - column:
+                  name: first_name
+                  value: Admin
+              - column:
+                  name: last_name
+                  value: User
+              - column:
+                  name: enabled
+                  valueBoolean: true
+              - column:
+                  name: account_non_expired
+                  valueBoolean: true
+              - column:
+                  name: account_non_locked
+                  valueBoolean: true
+              - column:
+                  name: credentials_non_expired
+                  valueBoolean: true
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: user
+              - column:
+                  name: password
+                  value: $2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a
+              - column:
+                  name: email
+                  value: user@example.com
+              - column:
+                  name: first_name
+                  value: Regular
+              - column:
+                  name: last_name
+                  value: User
+              - column:
+                  name: enabled
+                  valueBoolean: true
+              - column:
+                  name: account_non_expired
+                  valueBoolean: true
+              - column:
+                  name: account_non_locked
+                  valueBoolean: true
+              - column:
+                  name: credentials_non_expired
+                  valueBoolean: true
+        - insert:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: user_id
+                  valueComputed: (SELECT id FROM users WHERE username = 'admin')
+              - column:
+                  name: role
+                  value: ADMIN
+        - insert:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: user_id
+                  valueComputed: (SELECT id FROM users WHERE username = 'user')
+              - column:
+                  name: role
+                  value: USER 

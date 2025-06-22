@@ -1,0 +1,129 @@
+# Guia de Conexão DBeaver
+
+## 📋 Pré-requisitos
+
+1. **DBeaver instalado** (Community Edition é gratuita)
+2. **Docker rodando** com o banco PostgreSQL
+3. **Driver PostgreSQL** (geralmente já vem com o DBeaver)
+
+## 🐘 Conectando ao PostgreSQL
+
+### Passo 1: Iniciar o banco
+```bash
+# Versão completa (com pgAdmin)
+docker-compose up -d
+
+# OU versão simplificada
+docker-compose -f docker-compose-simple.yml up -d
+```
+
+### Passo 2: Criar nova conexão no DBeaver
+
+1. **Clique em "Nova Conexão"** (ícone de tomada +)
+2. **Selecione "PostgreSQL"**
+3. **Clique em "Próximo"**
+
+### Passo 3: Configurar parâmetros
+
+**Configurações principais:**
+- **Host**: `localhost`
+- **Port**: `5432`
+- **Database**: `certification_db`
+- **Username**: `certification_user`
+- **Password**: `certification_pass`
+
+**Configurações avançadas (aba "Driver properties"):**
+- `ssl`: `false`
+- `sslmode`: `disable`
+
+### Passo 4: Testar conexão
+1. **Clique em "Test Connection"**
+2. **Se der erro, verifique:**
+   - Docker está rodando?
+   - Banco foi iniciado?
+   - Porta 5432 está livre?
+
+### Passo 5: Conectar
+1. **Clique em "Finish"**
+2. **A conexão aparecerá na árvore de conexões**
+
+## 🗄️ Conectando ao H2 (Banco local)
+
+### Passo 1: Verificar se o banco H2 existe
+O arquivo deve estar em: `./data/dev-db.mv.db`
+
+### Passo 2: Criar nova conexão no DBeaver
+
+1. **Clique em "Nova Conexão"**
+2. **Selecione "H2"**
+3. **Clique em "Próximo"**
+
+### Passo 3: Configurar parâmetros
+
+**Configurações principais:**
+- **Path**: `C:\Users\felip\Desktop\Documentos\certification\data\dev-db`
+- **User**: `sa`
+- **Password**: (deixe em branco)
+
+**Configurações avançadas:**
+- **Driver**: `org.h2.Driver`
+- **URL**: `jdbc:h2:file:./data/dev-db`
+
+### Passo 4: Testar e conectar
+1. **Clique em "Test Connection"**
+2. **Clique em "Finish"**
+
+## 🔍 Explorando as Tabelas
+
+### Tabelas principais:
+- `users` - Dados dos usuários
+- `user_roles` - Roles dos usuários
+- `databasechangelog` - Controle do Liquibase
+- `databasechangeloglock` - Lock do Liquibase
+
+### Queries úteis:
+
+**Ver todos os usuários:**
+```sql
+SELECT id, username, email, enabled FROM users;
+```
+
+**Ver usuários com suas roles:**
+```sql
+SELECT u.username, u.email, ur.role 
+FROM users u 
+JOIN user_roles ur ON u.id = ur.user_id;
+```
+
+**Ver estrutura da tabela users:**
+```sql
+SELECT column_name, data_type, is_nullable 
+FROM information_schema.columns 
+WHERE table_name = 'users';
+```
+
+## 🚨 Solução de Problemas
+
+### Erro: "Connection refused"
+- Verifique se o Docker está rodando
+- Verifique se o banco foi iniciado: `docker ps`
+
+### Erro: "Authentication failed"
+- Verifique username/password
+- Para PostgreSQL: `certification_user` / `certification_pass`
+- Para H2: `sa` / (vazio)
+
+### Erro: "Database not found"
+- Para PostgreSQL: verifique se o nome é `certification_db`
+- Para H2: verifique se o arquivo `dev-db.mv.db` existe
+
+### Erro: "Driver not found"
+- Baixe o driver PostgreSQL no DBeaver
+- Vá em: Database → Driver Manager → PostgreSQL → Edit → Find Class
+
+## 📊 Dicas
+
+1. **Use o PostgreSQL** para desenvolvimento mais robusto
+2. **Use o H2** para testes rápidos
+3. **Sempre teste a conexão** antes de usar
+4. **Salve as configurações** para reutilizar depois 

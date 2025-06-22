@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: certification-postgres
+    environment:
+      POSTGRES_DB: certification_db
+      POSTGRES_USER: certification_user
+      POSTGRES_PASSWORD: certification_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - certification-network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: certification-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@certification.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "8081:80"
+    depends_on:
+      - postgres
+    networks:
+      - certification-network
+
+volumes:
+  postgres_data:
+
+networks:
+  certification-network:
+    driver: bridge 
