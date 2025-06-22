@@ -2,19 +2,13 @@
 
 ## Opções de Banco de Dados
 
-### 1. PostgreSQL para Desenvolvimento (Padrão)
-- **Configuração**: `application.yaml`
-- **Porta**: `5432`
-- **Database**: `certification_db`
-- **Uso**: Desenvolvimento local
-
-### 2. PostgreSQL para Testes
-- **Configuração**: `application-test.yaml`
+### 1. PostgreSQL para Desenvolvimento/Testes
+- **Configuração**: `application.yaml` (dev) / `application-test.yaml` (testes)
 - **Porta**: `5433`
 - **Database**: `certification_test_db`
-- **Uso**: Execução de testes
+- **Uso**: Desenvolvimento local e execução de testes
 
-### 3. PostgreSQL para Produção
+### 2. PostgreSQL para Produção
 - **Configuração**: `application-prod.yaml`
 - **Porta**: `5432`
 - **Database**: `certification_db`
@@ -24,8 +18,8 @@
 
 ### 1. Desenvolvimento
 ```bash
-# Iniciar banco de desenvolvimento
-docker-compose up -d
+# Iniciar banco de desenvolvimento/testes
+docker-compose -f docker-compose-test.yml up -d
 
 # Executar aplicação (usa configuração padrão)
 .\gradlew.bat bootRun
@@ -33,7 +27,7 @@ docker-compose up -d
 
 ### 2. Testes
 ```bash
-# Iniciar banco de testes
+# Iniciar banco de testes (mesmo do desenvolvimento)
 docker-compose -f docker-compose-test.yml up -d
 
 # Executar testes
@@ -52,7 +46,7 @@ docker-compose up -d
 .\gradlew.bat bootRun --args='--spring.profiles.active=prod'
 ```
 
-### 4. Acessar o pgAdmin (desenvolvimento/produção)
+### 4. Acessar o pgAdmin (produção)
 - **URL**: http://localhost:8081
 - **Email**: admin@certification.com
 - **Senha**: admin123
@@ -66,11 +60,11 @@ docker-compose up -d
 
 ### 6. Parar os bancos
 ```bash
-# Parar banco de desenvolvimento/produção
-docker-compose down
-
-# Parar banco de testes
+# Parar banco de desenvolvimento/testes
 docker-compose -f docker-compose-test.yml down
+
+# Parar banco de produção
+docker-compose down
 
 # Parar todos
 docker-compose down && docker-compose -f docker-compose-test.yml down
@@ -78,31 +72,31 @@ docker-compose down && docker-compose -f docker-compose-test.yml down
 
 ### 7. Ver logs dos bancos
 ```bash
-# Logs do banco de desenvolvimento/produção
-docker-compose logs postgres
-
-# Logs do banco de testes
+# Logs do banco de desenvolvimento/testes
 docker-compose -f docker-compose-test.yml logs postgres-test
 
+# Logs do banco de produção
+docker-compose logs postgres
+
 # Logs em tempo real
-docker-compose logs -f postgres
+docker-compose -f docker-compose-test.yml logs -f postgres-test
 ```
 
 ## Configurações dos Bancos
 
-### Desenvolvimento/Produção (Porta 5432)
+### Desenvolvimento/Testes (Porta 5433)
+- **Database**: `certification_test_db`
+- **Username**: `certification_test_user`
+- **Password**: `certification_test_pass`
+- **DDL**: `validate` (dev) / `create-drop` (testes)
+- **Logs**: Detalhados
+
+### Produção (Porta 5432)
 - **Database**: `certification_db`
 - **Username**: `certification_user`
 - **Password**: `certification_pass`
 - **DDL**: `validate` (não altera estrutura)
-- **Logs**: Detalhados (dev) / Mínimos (prod)
-
-### Testes (Porta 5433)
-- **Database**: `certification_test_db`
-- **Username**: `certification_test_user`
-- **Password**: `certification_test_pass`
-- **DDL**: `create-drop` (recria a cada teste)
-- **Logs**: Detalhados
+- **Logs**: Mínimos
 
 ## Tabelas Criadas pelo Liquibase
 
@@ -161,8 +155,8 @@ docker-compose -f docker-compose-test.yml down
 ```
 
 ### Erro: "Database not found"
-- Para desenvolvimento/produção: verifique se o nome é `certification_db`
-- Para testes: verifique se o nome é `certification_test_db`
+- Para desenvolvimento/testes: verifique se o nome é `certification_test_db`
+- Para produção: verifique se o nome é `certification_db`
 
 ### Container não inicia
 ```bash
