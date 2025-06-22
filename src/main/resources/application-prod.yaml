@@ -1,12 +1,6 @@
 spring:
   application:
-    name: certification-repository
-
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8080
+    name: certification-repository-prod
 
   datasource:
     url: jdbc:postgresql://localhost:5432/certification_db
@@ -16,10 +10,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
   liquibase:
@@ -28,7 +22,6 @@ spring:
 
   logging:
     level:
-      org.springframework.security: DEBUG
-      org.springframework.security.oauth2: DEBUG
-      org.hibernate.SQL: DEBUG
-      org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+      org.springframework.security: WARN
+      org.springframework.security.oauth2: WARN
+      org.hibernate.SQL: WARN 

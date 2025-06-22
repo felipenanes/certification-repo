@@ -1,0 +1,21 @@
+services:
+  postgres-test:
+    image: postgres:15-alpine
+    container_name: certification-postgres-test
+    environment:
+      POSTGRES_DB: certification_test_db
+      POSTGRES_USER: certification_test_user
+      POSTGRES_PASSWORD: certification_test_pass
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data
+    networks:
+      - certification-test-network
+
+volumes:
+  postgres_test_data:
+
+networks:
+  certification-test-network:
+    driver: bridge 

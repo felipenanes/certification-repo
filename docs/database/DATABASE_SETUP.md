@@ -2,51 +2,107 @@
 
 ## Opções de Banco de Dados
 
-### 1. H2 (Banco em Memória/Arquivo) - Padrão
-- **Arquivo**: `./data/dev-db.mv.db`
+### 1. PostgreSQL para Desenvolvimento (Padrão)
 - **Configuração**: `application.yaml`
-- **Uso**: Desenvolvimento local simples
+- **Porta**: `5432`
+- **Database**: `certification_db`
+- **Uso**: Desenvolvimento local
 
-### 2. PostgreSQL (Recomendado para Produção)
-- **Configuração**: `application-postgres.yaml`
-- **Interface**: pgAdmin em http://localhost:8081
+### 2. PostgreSQL para Testes
+- **Configuração**: `application-test.yaml`
+- **Porta**: `5433`
+- **Database**: `certification_test_db`
+- **Uso**: Execução de testes
 
-## Como usar o PostgreSQL
+### 3. PostgreSQL para Produção
+- **Configuração**: `application-prod.yaml`
+- **Porta**: `5432`
+- **Database**: `certification_db`
+- **Uso**: Ambiente de produção
 
-### 1. Iniciar o banco de dados
+## Como usar os diferentes ambientes
+
+### 1. Desenvolvimento
 ```bash
-# Opção 1: Usar o script
-start-database.bat
-
-# Opção 2: Comando direto
+# Iniciar banco de desenvolvimento
 docker-compose up -d
+
+# Executar aplicação (usa configuração padrão)
+.\gradlew.bat bootRun
 ```
 
-### 2. Executar a aplicação com PostgreSQL
+### 2. Testes
 ```bash
-.\gradlew.bat bootRun --args='--spring.profiles.active=postgres'
+# Iniciar banco de testes
+docker-compose -f docker-compose-test.yml up -d
+
+# Executar testes
+.\gradlew.bat test
+
+# Ou executar aplicação com profile de teste
+.\gradlew.bat bootRun --args='--spring.profiles.active=test'
 ```
 
-### 3. Acessar o pgAdmin
+### 3. Produção
+```bash
+# Iniciar banco de produção
+docker-compose up -d
+
+# Executar aplicação com profile de produção
+.\gradlew.bat bootRun --args='--spring.profiles.active=prod'
+```
+
+### 4. Acessar o pgAdmin (desenvolvimento/produção)
 - **URL**: http://localhost:8081
 - **Email**: admin@certification.com
 - **Senha**: admin123
 
-### 4. Conectar ao banco no pgAdmin
+### 5. Conectar ao banco no pgAdmin
 - **Host**: postgres
 - **Port**: 5432
 - **Database**: certification_db
 - **Username**: certification_user
 - **Password**: certification_pass
 
-### 5. Parar o banco de dados
+### 6. Parar os bancos
 ```bash
-# Opção 1: Usar o script
-stop-database.bat
-
-# Opção 2: Comando direto
+# Parar banco de desenvolvimento/produção
 docker-compose down
+
+# Parar banco de testes
+docker-compose -f docker-compose-test.yml down
+
+# Parar todos
+docker-compose down && docker-compose -f docker-compose-test.yml down
 ```
+
+### 7. Ver logs dos bancos
+```bash
+# Logs do banco de desenvolvimento/produção
+docker-compose logs postgres
+
+# Logs do banco de testes
+docker-compose -f docker-compose-test.yml logs postgres-test
+
+# Logs em tempo real
+docker-compose logs -f postgres
+```
+
+## Configurações dos Bancos
+
+### Desenvolvimento/Produção (Porta 5432)
+- **Database**: `certification_db`
+- **Username**: `certification_user`
+- **Password**: `certification_pass`
+- **DDL**: `validate` (não altera estrutura)
+- **Logs**: Detalhados (dev) / Mínimos (prod)
+
+### Testes (Porta 5433)
+- **Database**: `certification_test_db`
+- **Username**: `certification_test_user`
+- **Password**: `certification_test_pass`
+- **DDL**: `create-drop` (recria a cada teste)
+- **Logs**: Detalhados
 
 ## Tabelas Criadas pelo Liquibase
 
@@ -85,4 +141,46 @@ docker-compose down
 As migrações estão em:
 - `src/main/resources/db/changelog/db.changelog-master.yaml`
 - `src/main/resources/db/changelog/changes/001-create-users-table.yaml`
-- `src/main/resources/db/changelog/changes/002-insert-initial-users.yaml` 
+- `src/main/resources/db/changelog/changes/002-insert-initial-users.yaml`
+
+## Troubleshooting
+
+### Erro: "Connection refused"
+- Verifique se o Docker está rodando
+- Verifique se o banco foi iniciado: `docker ps`
+
+### Erro: "Port 5432/5433 already in use"
+```bash
+# Verificar processos nas portas
+netstat -ano | findstr :5432
+netstat -ano | findstr :5433
+
+# Parar containers existentes
+docker-compose down
+docker-compose -f docker-compose-test.yml down
+```
+
+### Erro: "Database not found"
+- Para desenvolvimento/produção: verifique se o nome é `certification_db`
+- Para testes: verifique se o nome é `certification_test_db`
+
+### Container não inicia
+```bash
+# Ver logs detalhados
+docker-compose logs postgres
+docker-compose -f docker-compose-test.yml logs postgres-test
+
+# Reiniciar containers
+docker-compose restart postgres
+docker-compose -f docker-compose-test.yml restart postgres-test
+```
+
+### Limpeza completa
+```bash
+# Parar e remover todos os containers e volumes
+docker-compose down -v
+docker-compose -f docker-compose-test.yml down -v
+
+# Limpar volumes não utilizados
+docker volume prune
+``` 
