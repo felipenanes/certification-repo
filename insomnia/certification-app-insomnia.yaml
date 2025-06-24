@@ -1,0 +1,111 @@
+type: collection.insomnia.rest/5.0
+name: Certification App
+meta:
+  id: wrk_d23f9382e06a40fb8cb2986a4097fb81
+  created: 1750495571303
+  modified: 1750495571303
+collection:
+  - url: http://localhost:8080/home-auth
+    name: Test Auth
+    meta:
+      id: req_783bf9956c854acda9065c08ee3cd826
+      created: 1750527701320
+      modified: 1750527913176
+      isPrivate: false
+      sortKey: -1750527701320
+    method: GET
+    headers:
+      - id: pair_046333a6e38d4377be1f26450570e8c9
+        disabled: false
+    authentication:
+      type: bearer
+      disabled: false
+      token: eyJraWQiOiIyMWRiY2I5OS1jM2I2LTQ2NzEtYWE4MC0wMDBhOGVlYjQ2NGEiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiYXVkIjoiY2VydGlmaWNhdGlvbi1hcHAiLCJuYmYiOjE3NTA1Mjc1OTAsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE3NTA1Mjc4OTAsImlhdCI6MTc1MDUyNzU5MCwianRpIjoiZDYzMThmZjQtOGUyNy00NDQ0LThmYTAtMDc4NzY4ZDAyY2MxIn0.rNe3bICW5EPXDFPWpssRbgKT9utjFWE0MsGtGPBrGe94cb3-577D71xlfI9zFXn9JjqnyrNvk_c8pGg4MMStKyKoSvAsk-2u1PiPtkW_RqhEGI4HAs8msIAdri_fIE0zOrfxhVrmrIq8Y1tzBp1UDUmPyt5aM_2atBheMQSKqcA9UIdD3fv0MvYwW-smgEQTrUlMTDlbZn4uabdPG87pue4wqQ_3wSzKluYGAo91IXWFpqnjBZn73ZYwvoudXAmeMS3rMLp9MSExzz0c9_f8p2ilFB9bbFIQShPrGVRUqbS_HWmcxELPT0L7cciyh6g36EE6vv73cLTbMtZwkXoY_w
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/oauth2/authorize?response_type=code&client_id=certification-app&redirect_uri=http://localhost:8080/home&scope=read%20write&state=abc123
+    name: Authorization Code
+    meta:
+      id: req_d6faf1ec91214142b94e163a5485429b
+      created: 1750743892658
+      modified: 1750743918427
+      isPrivate: false
+      sortKey: -1750743892658
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/oauth2/token
+    name: Access Token GET
+    meta:
+      id: req_52ebefd2da304c0da709027f956402fe
+      created: 1750746544627
+      modified: 1750747912397
+      isPrivate: false
+      sortKey: -1750746544627
+    method: POST
+    body:
+      mimeType: application/x-www-form-urlencoded
+      params:
+        - name: grant_type
+          value: authorization_code
+          id: pair_d301a873265d41c6bbf3c8d91da7d833
+        - name: code
+          value: bedUtvPRprfZZqhNHY-FwDbCDVz1k3iY11kSZVV8euHNzwAcc873LH33EbHR6yJM38_iEaaq2s17amIlYtskTkNYMIODoaZJIAi6vQ-yfIzBZ98445wrP1GlcMGMKgLY
+          id: pair_8a8e06adb8ab4f5fb6ca436798866591
+          disabled: false
+        - name: redirect_uri
+          value: http://localhost:8080/home
+          id: pair_dfa1f5169db54c83b077bff7822b3397
+    headers:
+      - name: Authorization
+        value: Basic Y2VydGlmaWNhdGlvbi1hcHA6c2VjcmV0
+        id: pair_aa4f8729c3ad4c379c19db61cccdb7d0
+      - name: Content-Type
+        value: application/x-www-form-urlencoded
+        id: pair_67b06d46d3374a05aad6a25368fcb460
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_af07f59428d13df8677131fe3104f1e87264d966
+    created: 1750495571306
+    modified: 1750743934526
+  cookies:
+    - key: JSESSIONID
+      value: ACEF8E80CF3B7D18E40704606796E744
+      domain: localhost
+      path: /
+      httpOnly: true
+      hostOnly: true
+      creation: 2025-06-21T08:52:28.403Z
+      lastAccessed: 2025-06-24T05:45:34.526Z
+      id: 404db2e3-ca56-48d3-84b0-f68bba50c7ef
+environments:
+  name: Base Environment
+  meta:
+    id: env_af07f59428d13df8677131fe3104f1e87264d966
+    created: 1750495571305
+    modified: 1750495571305
+    isPrivate: false

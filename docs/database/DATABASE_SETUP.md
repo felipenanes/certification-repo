@@ -120,13 +120,13 @@ docker-compose -f docker-compose-test.yml logs -f postgres-test
 
 ### Admin
 - **Username**: admin
-- **Password**: admin123
+- **Password**: 123456
 - **Email**: admin@example.com
 - **Roles**: ADMIN
 
 ### User
 - **Username**: user
-- **Password**: user123
+- **Password**: 123456
 - **Email**: user@example.com
 - **Roles**: USER
 

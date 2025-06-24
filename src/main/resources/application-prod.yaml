@@ -1,6 +1,8 @@
 spring:
   application:
     name: certification-repository-prod
+  main:
+    banner-mode: console
 
   datasource:
     url: jdbc:postgresql://localhost:5432/certification_db
@@ -9,7 +11,7 @@ spring:
     password: certification_pass
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
     show-sql: false
     properties:
       hibernate:

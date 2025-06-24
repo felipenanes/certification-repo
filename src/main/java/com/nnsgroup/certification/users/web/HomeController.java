@@ -8,14 +8,22 @@ import java.security.Principal;
 
 @RestController
 public class HomeController {
-
     @GetMapping("/home")
     public String home(Principal principal) {
-        return "Olá, " + principal.getName();
+        if (principal != null) {
+            return "Olá, " + principal.getName();
+        } else {
+            return "Bem-vindo, visitante!";
+        }
     }
 
     @GetMapping("/home-auth")
     public String homeAuth(Authentication auth) {
         return "Usuário logado: " + auth.getName() + " | Roles: " + auth.getAuthorities();
+    }
+
+    @GetMapping("/test")
+    public String test() {
+        return "Aplicação funcionando!";
     }
 }

@@ -11,7 +11,7 @@ databaseChangeLog:
                   value: admin
               - column:
                   name: password
-                  value: $2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa
+                  value: "{bcrypt}$2a$12$jTRyHGGk39IHbZ7MJDgToenG1Pr14dJIABfD4B9FMRvfSaaOHiid2"
               - column:
                   name: email
                   value: admin@example.com
@@ -41,7 +41,7 @@ databaseChangeLog:
                   value: user
               - column:
                   name: password
-                  value: $2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a
+                  value: "{bcrypt}$2a$12$jTRyHGGk39IHbZ7MJDgToenG1Pr14dJIABfD4B9FMRvfSaaOHiid2"
               - column:
                   name: email
                   value: user@example.com

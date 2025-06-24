@@ -1,12 +1,14 @@
 spring:
   application:
     name: certification-repository-test
+  main:
+    banner-mode: console
 
   datasource:
-    url: jdbc:postgresql://localhost:5433/certification_test_db
+    url: jdbc:postgresql://localhost:5432/certification_db
     driver-class-name: org.postgresql.Driver
-    username: certification_test_user
-    password: certification_test_pass
+    username: certification_user
+    password: certification_pass
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -17,6 +19,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
   liquibase:
+    clear-checksums: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
     enabled: true
 
@@ -29,4 +32,6 @@ spring:
   logging:
     level:
       org.springframework.security: DEBUG
-      org.hibernate.SQL: DEBUG 
+      org.springframework.security.authentication: DEBUG
+      org.springframework.security.web: DEBUG
+      org.hibernate.SQL: DEBUG
