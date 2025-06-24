@@ -10,11 +10,10 @@
 
 ### Passo 1: Iniciar o banco
 ```bash
-# Versão completa (com pgAdmin)
+# Produção (porta 5432)
 docker-compose up -d
-
-# OU versão simplificada
-docker-compose -f docker-compose-simple.yml up -d
+# Desenvolvimento/Teste (porta 5433)
+docker-compose -f docker-compose-test.yml up -d
 ```
 
 ### Passo 2: Criar nova conexão no DBeaver
@@ -27,10 +26,10 @@ docker-compose -f docker-compose-simple.yml up -d
 
 **Configurações principais:**
 - **Host**: `localhost`
-- **Port**: `5432`
-- **Database**: `certification_db`
-- **Username**: `certification_user`
-- **Password**: `certification_pass`
+- **Port**: `5432` (produção) ou `5433` (dev/teste)
+- **Database**: `certification_db` (produção) ou `certification_test_db` (dev/teste)
+- **Username**: `certification_user` (produção) ou `certification_test_user` (dev/teste)
+- **Password**: `certification_pass` (produção) ou `certification_test_pass` (dev/teste)
 
 **Configurações avançadas (aba "Driver properties"):**
 - `ssl`: `false`
@@ -41,7 +40,7 @@ docker-compose -f docker-compose-simple.yml up -d
 2. **Se der erro, verifique:**
    - Docker está rodando?
    - Banco foi iniciado?
-   - Porta 5432 está livre?
+   - Porta correta?
 
 ### Passo 5: Conectar
 1. **Clique em "Finish"**
@@ -110,11 +109,11 @@ WHERE table_name = 'users';
 
 ### Erro: "Authentication failed"
 - Verifique username/password
-- Para PostgreSQL: `certification_user` / `certification_pass`
+- Para PostgreSQL: `certification_user`/`certification_pass` (produção) ou `certification_test_user`/`certification_test_pass` (dev/teste)
 - Para H2: `sa` / (vazio)
 
 ### Erro: "Database not found"
-- Para PostgreSQL: verifique se o nome é `certification_db`
+- Para PostgreSQL: verifique se o nome é `certification_db` (produção) ou `certification_test_db` (dev/teste)
 - Para H2: verifique se o arquivo `dev-db.mv.db` existe
 
 ### Erro: "Driver not found"

@@ -19,12 +19,9 @@
 ```bash
 # Verificar se Java está instalado
 java -version
-
-# Se não estiver, baixar do site oficial da Oracle
-# ou usar OpenJDK
 ```
 
-### 2. Docker Desktop
+### 2. Docker Desktop (opcional, para PostgreSQL)
 ```bash
 # Baixar e instalar Docker Desktop
 # Iniciar o Docker Desktop
@@ -66,31 +63,40 @@ export PATH=$PATH:$JAVA_HOME/bin
 
 ## 🗄️ Configuração de Banco de Dados
 
-### Opção 1: H2 (Padrão)
+### Opção 1: H2 (Padrão para desenvolvimento)
 ```bash
-# Executar aplicação (cria banco automaticamente)
+# Executar aplicação (cria banco H2 automaticamente)
 ./gradlew bootRun
 ```
 
-### Opção 2: PostgreSQL (Recomendado)
+### Opção 2: PostgreSQL (Recomendado para produção e integração)
 ```bash
-# Iniciar PostgreSQL
+# Iniciar PostgreSQL (produção)
 docker-compose up -d
 
-# Executar com profile PostgreSQL
-./gradlew bootRun --args='--spring.profiles.active=postgres'
+# Iniciar PostgreSQL (desenvolvimento/teste)
+docker-compose -f docker-compose-test.yml up -d
+
+# Executar aplicação com profile desejado
+# Produção:
+./gradlew bootRun --args='--spring.profiles.active=prod'
+# Teste:
+./gradlew bootRun --args='--spring.profiles.active=test'
+# Desenvolvimento (padrão):
+./gradlew bootRun
 ```
 
 ## 🔐 Configuração de Segurança
 
 ### Usuários Padrão:
-- **admin** / admin123 (ROLE_ADMIN)
-- **user** / user123 (ROLE_USER)
+- **admin** / 123456 (ROLE_ADMIN)
+- **user** / 123456 (ROLE_USER)
 
 ### Configurações OAuth2:
 - **Client ID**: certification-app
 - **Client Secret**: secret
 - **Redirect URI**: http://localhost:8080/home
+- **Scopes**: read, write
 
 ## 🧪 Testando o Ambiente
 
@@ -109,10 +115,8 @@ curl http://localhost:8080/.well-known/oauth-authorization-server
 ```
 
 ### 3. Testar banco de dados:
-```bash
-# Conectar no DBeaver
-# Verificar se as tabelas foram criadas
-```
+- Conectar no DBeaver ou pgAdmin
+- Verificar se as tabelas foram criadas
 
 ## 📁 Estrutura do Projeto
 
@@ -129,11 +133,13 @@ certification/
 │   │   │       └── providers/         # Módulo de provedores
 │   │   └── resources/
 │   │       ├── application.yaml       # Configuração principal
-│   │       ├── application-postgres.yaml  # Configuração PostgreSQL
+│   │       ├── application-prod.yaml  # Configuração produção
+│   │       ├── application-test.yaml  # Configuração testes
 │   │       └── db/changelog/          # Migrações Liquibase
 │   └── test/
 ├── docs/                              # Documentação
-├── docker-compose.yml                 # Docker PostgreSQL + pgAdmin
+├── docker-compose.yml                 # Docker PostgreSQL + pgAdmin (produção)
+├── docker-compose-test.yml            # Docker PostgreSQL (desenvolvimento/teste)
 ├── docker-compose-simple.yml          # Docker PostgreSQL apenas
 └── build.gradle                       # Dependências e configuração
 ```
@@ -171,7 +177,6 @@ export PATH=$PATH:$JAVA_HOME/bin
 ```bash
 # Verificar processo na porta
 netstat -ano | findstr :8080
-
 # Matar processo
 taskkill /PID <process_id>
 ```
@@ -180,7 +185,6 @@ taskkill /PID <process_id>
 ```bash
 # Verificar se Docker está rodando
 docker ps
-
 # Verificar logs do PostgreSQL
 docker-compose logs postgres
 ```
@@ -194,8 +198,6 @@ docker-compose logs postgres
 
 ## 📚 Recursos Adicionais
 
-### Documentação:
-- [docs/README.md](../README.md) - Índice da documentação
 - [docs/database/DATABASE_SETUP.md](../database/DATABASE_SETUP.md) - Setup do banco
 - [docs/security/OAUTH2_SETUP.md](../security/OAUTH2_SETUP.md) - Configuração OAuth2
 

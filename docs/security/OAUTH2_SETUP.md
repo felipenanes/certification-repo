@@ -2,7 +2,7 @@
 
 ## 📋 Visão Geral
 
-Este projeto utiliza o **Spring Authorization Server** para implementar um servidor OAuth2 completo com autenticação JWT.
+Este projeto utiliza o **Spring Authorization Server** para implementar um servidor OAuth2 com autenticação JWT, integrado ao banco de dados e com clientes e usuários persistidos.
 
 ## 🏗️ Arquitetura
 
@@ -11,7 +11,7 @@ Este projeto utiliza o **Spring Authorization Server** para implementar um servi
 - **Spring Security** - Framework de segurança
 - **JWT** - Tokens de acesso
 - **BCrypt** - Criptografia de senhas
-- **Database** - Usuários persistidos
+- **Banco de Dados** - Usuários e clientes persistidos
 
 ## 📁 Estrutura de Arquivos
 
@@ -29,71 +29,42 @@ src/main/java/com/nnsgroup/certification/security/
 
 ## ⚙️ Configurações
 
-### 1. AuthorizationServerConfig
-```java
-@Configuration
-public class AuthorizationServerConfig {
-    // Configuração do cliente OAuth2
-    // Endpoints de autorização
-    // Configurações JWT
-}
-```
+### AuthorizationServerConfig
+- Registra o cliente OAuth2 no banco de dados, se não existir.
+- Utiliza BCrypt para criptografar o client secret.
+- Configura grant types: Authorization Code e Refresh Token.
+- Define redirect URI e scopes.
 
-### 2. SecurityConfig
-```java
-@Configuration
-@EnableWebSecurity
-public class SecurityConfig {
-    // Configuração de segurança
-    // PasswordEncoder (BCrypt)
-    // Filtros de segurança
-}
-```
+### SecurityConfig
+- Configura o PasswordEncoder (BCrypt).
+- Define regras de segurança para endpoints.
 
-### 3. DatabaseUserDetailsService
-```java
-@Service
-public class DatabaseUserDetailsService implements UserDetailsService {
-    // Carrega usuários do banco de dados
-    // Implementa UserDetails
-}
-```
+## 🔑 Cliente OAuth2 Configurado
 
-## 🔑 Clientes OAuth2 Configurados
-
-### Cliente Principal:
 - **Client ID**: `certification-app`
-- **Client Secret**: `secret` (criptografado)
+- **Client Secret**: `secret` (armazenado criptografado)
 - **Grant Types**: 
   - Authorization Code
   - Refresh Token
 - **Redirect URI**: `http://localhost:8080/home`
-- **Scopes**: `openid`, `read`, `write`
+- **Scopes**: `read`, `write`
+- **Client Authentication**: `client_secret_basic`
 
 ## 👥 Usuários Padrão
 
-### Admin:
-- **Username**: `admin`
-- **Password**: `admin123`
-- **Roles**: `ROLE_ADMIN`
-
-### User:
-- **Username**: `user`
-- **Password**: `user123`
-- **Roles**: `ROLE_USER`
+- **admin** / 123456 (ROLE_ADMIN)
+- **user** / 123456 (ROLE_USER)
 
 ## 🔄 Fluxo de Autenticação
 
-### 1. Authorization Code Flow:
-```
-1. Cliente redireciona para /oauth2/authorize
+### Authorization Code Flow:
+1. Cliente redireciona para `/oauth2/authorize`
 2. Usuário faz login
 3. Servidor redireciona com authorization code
-4. Cliente troca code por access token
+4. Cliente troca code por access token em `/oauth2/token`
 5. Cliente usa access token nas requisições
-```
 
-### 2. Endpoints Disponíveis:
+### Endpoints Disponíveis:
 - `/oauth2/authorize` - Autorização
 - `/oauth2/token` - Token
 - `/oauth2/introspect` - Introspect
@@ -102,20 +73,10 @@ public class DatabaseUserDetailsService implements UserDetailsService {
 
 ## 🛡️ Segurança
 
-### Senhas:
-- **Criptografia**: BCrypt
-- **Salt**: Automático
-- **Rounds**: 10 (padrão)
-
-### Tokens:
-- **Tipo**: JWT
-- **Assinatura**: HMAC-SHA256
-- **Expiração**: Configurável
-
-### Headers de Segurança:
-- CSRF desabilitado para APIs
-- CORS configurado
-- Headers de segurança automáticos
+- **Senhas**: BCrypt
+- **Tokens**: JWT (HMAC-SHA256)
+- **CSRF**: Desabilitado para APIs
+- **CORS**: Configurado
 
 ## 🧪 Testando
 
@@ -125,7 +86,7 @@ GET /oauth2/authorize?
   response_type=code&
   client_id=certification-app&
   redirect_uri=http://localhost:8080/home&
-  scope=openid&
+  scope=read&
   state=123
 ```
 
@@ -149,36 +110,14 @@ Authorization: Bearer {access_token}
 
 ## 🔧 Configurações Avançadas
 
-### Customizar JWT Claims:
-```java
-@Bean
-public JWKSource<SecurityContext> jwkSource() {
-    // Configuração customizada de JWT
-}
-```
-
-### Adicionar Scopes Customizados:
-```java
-RegisteredClient.withId(UUID.randomUUID().toString())
-    .clientId("custom-client")
-    .scopes("custom-scope")
-    // ...
-```
-
-### Configurar Expiração:
-```java
-.authorizationServerSettings(settings -> settings
-    .issuer("http://localhost:8080")
-    .authorizationEndpoint("/oauth2/authorize")
-    .tokenEndpoint("/oauth2/token")
-)
-```
+- É possível adicionar mais clientes OAuth2 via banco de dados.
+- Scopes customizados podem ser definidos conforme a necessidade.
+- Expiração dos tokens pode ser configurada no AuthorizationServerSettings.
 
 ## 🚨 Troubleshooting
 
 ### Erro: "Invalid client"
-- Verifique se o client_id está correto
-- Verifique se o client_secret está correto
+- Verifique se o client_id e client_secret estão corretos
 
 ### Erro: "Invalid grant"
 - Verifique se o grant_type está suportado

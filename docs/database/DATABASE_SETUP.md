@@ -2,48 +2,50 @@
 
 ## Opções de Banco de Dados
 
-### 1. PostgreSQL para Desenvolvimento/Testes
-- **Configuração**: `application.yaml` (dev) / `application-test.yaml` (testes)
-- **Porta**: `5433`
-- **Database**: `certification_test_db`
-- **Uso**: Desenvolvimento local e execução de testes
-
-### 2. PostgreSQL para Produção
+### 1. PostgreSQL para Produção
 - **Configuração**: `application-prod.yaml`
 - **Porta**: `5432`
 - **Database**: `certification_db`
+- **Usuário**: `certification_user`
+- **Senha**: `certification_pass`
 - **Uso**: Ambiente de produção
+
+### 2. PostgreSQL para Desenvolvimento/Testes
+- **Configuração**: `application-test.yaml`
+- **Porta**: `5433`
+- **Database**: `certification_test_db`
+- **Usuário**: `certification_test_user`
+- **Senha**: `certification_test_pass`
+- **Uso**: Desenvolvimento local e execução de testes
+
+### 3. H2 (Desenvolvimento Local)
+- **Configuração**: `application.yaml`
+- **Uso**: Testes rápidos e desenvolvimento sem Docker
 
 ## Como usar os diferentes ambientes
 
-### 1. Desenvolvimento
-```bash
-# Iniciar banco de desenvolvimento/testes
-docker-compose -f docker-compose-test.yml up -d
-
-# Executar aplicação (usa configuração padrão)
-.\gradlew.bat bootRun
-```
-
-### 2. Testes
-```bash
-# Iniciar banco de testes (mesmo do desenvolvimento)
-docker-compose -f docker-compose-test.yml up -d
-
-# Executar testes
-.\gradlew.bat test
-
-# Ou executar aplicação com profile de teste
-.\gradlew.bat bootRun --args='--spring.profiles.active=test'
-```
-
-### 3. Produção
+### 1. Produção
 ```bash
 # Iniciar banco de produção
 docker-compose up -d
-
 # Executar aplicação com profile de produção
-.\gradlew.bat bootRun --args='--spring.profiles.active=prod'
+./gradlew bootRun --args='--spring.profiles.active=prod'
+```
+
+### 2. Desenvolvimento/Teste
+```bash
+# Iniciar banco de desenvolvimento/teste
+docker-compose -f docker-compose-test.yml up -d
+# Executar aplicação (profile de teste)
+./gradlew bootRun --args='--spring.profiles.active=test'
+# Ou executar aplicação (profile padrão)
+./gradlew bootRun
+```
+
+### 3. H2 (Desenvolvimento Local)
+```bash
+# Executar aplicação (cria banco H2 automaticamente)
+./gradlew bootRun
 ```
 
 ### 4. Acessar o pgAdmin (produção)
@@ -51,52 +53,30 @@ docker-compose up -d
 - **Email**: admin@certification.com
 - **Senha**: admin123
 
-### 5. Conectar ao banco no pgAdmin
-- **Host**: postgres
-- **Port**: 5432
-- **Database**: certification_db
-- **Username**: certification_user
-- **Password**: certification_pass
+### 5. Conectar ao banco no pgAdmin ou DBeaver
+- **Host**: localhost
+- **Porta**: 5432 (produção) ou 5433 (dev/teste)
+- **Database**: certification_db ou certification_test_db
+- **Username**: certification_user ou certification_test_user
+- **Password**: certification_pass ou certification_test_pass
 
 ### 6. Parar os bancos
 ```bash
-# Parar banco de desenvolvimento/testes
-docker-compose -f docker-compose-test.yml down
-
 # Parar banco de produção
 docker-compose down
-
+# Parar banco de desenvolvimento/teste
+docker-compose -f docker-compose-test.yml down
 # Parar todos
 docker-compose down && docker-compose -f docker-compose-test.yml down
 ```
 
 ### 7. Ver logs dos bancos
 ```bash
-# Logs do banco de desenvolvimento/testes
-docker-compose -f docker-compose-test.yml logs postgres-test
-
 # Logs do banco de produção
 docker-compose logs postgres
-
-# Logs em tempo real
-docker-compose -f docker-compose-test.yml logs -f postgres-test
+# Logs do banco de desenvolvimento/teste
+docker-compose -f docker-compose-test.yml logs postgres-test
 ```
-
-## Configurações dos Bancos
-
-### Desenvolvimento/Testes (Porta 5433)
-- **Database**: `certification_test_db`
-- **Username**: `certification_test_user`
-- **Password**: `certification_test_pass`
-- **DDL**: `validate` (dev) / `create-drop` (testes)
-- **Logs**: Detalhados
-
-### Produção (Porta 5432)
-- **Database**: `certification_db`
-- **Username**: `certification_user`
-- **Password**: `certification_pass`
-- **DDL**: `validate` (não altera estrutura)
-- **Logs**: Mínimos
 
 ## Tabelas Criadas pelo Liquibase
 
@@ -134,7 +114,7 @@ docker-compose -f docker-compose-test.yml logs -f postgres-test
 
 As migrações estão em:
 - `src/main/resources/db/changelog/db.changelog-master.yaml`
-- `src/main/resources/db/changelog/changes/001-create-users-table.yaml`
+- `src/main/resources/db/changelog/changes/001-create-initial-db-structure.yaml`
 - `src/main/resources/db/changelog/changes/002-insert-initial-users.yaml`
 
 ## Troubleshooting
@@ -148,7 +128,6 @@ As migrações estão em:
 # Verificar processos nas portas
 netstat -ano | findstr :5432
 netstat -ano | findstr :5433
-
 # Parar containers existentes
 docker-compose down
 docker-compose -f docker-compose-test.yml down
@@ -163,7 +142,6 @@ docker-compose -f docker-compose-test.yml down
 # Ver logs detalhados
 docker-compose logs postgres
 docker-compose -f docker-compose-test.yml logs postgres-test
-
 # Reiniciar containers
 docker-compose restart postgres
 docker-compose -f docker-compose-test.yml restart postgres-test
@@ -174,7 +152,6 @@ docker-compose -f docker-compose-test.yml restart postgres-test
 # Parar e remover todos os containers e volumes
 docker-compose down -v
 docker-compose -f docker-compose-test.yml down -v
-
 # Limpar volumes não utilizados
 docker volume prune
 ``` 
