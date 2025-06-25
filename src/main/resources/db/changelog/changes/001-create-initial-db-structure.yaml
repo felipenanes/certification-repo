@@ -3,13 +3,14 @@ databaseChangeLog:
       id: 001
       author: system
       changes:
+
+        # ----------------- USERS -------------------
         - createTable:
             tableName: users
             columns:
               - column:
                   name: id
-                  type: bigint
-                  autoIncrement: true
+                  type: UUID
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -45,21 +46,27 @@ databaseChangeLog:
                   name: account_non_expired
                   type: boolean
                   defaultValueBoolean: true
+                  constraints:
+                    nullable: false
               - column:
                   name: account_non_locked
                   type: boolean
                   defaultValueBoolean: true
+                  constraints:
+                    nullable: false
               - column:
                   name: credentials_non_expired
                   type: boolean
                   defaultValueBoolean: true
+                  constraints:
+                    nullable: false
 
         - createTable:
             tableName: user_roles
             columns:
               - column:
                   name: user_id
-                  type: bigint
+                  type: UUID
                   constraints:
                     nullable: false
                     foreignKeyName: fk_user_roles_user
@@ -70,6 +77,95 @@ databaseChangeLog:
                   constraints:
                     nullable: false
 
+        # ----------------- PROVIDERS -------------------
+        - createTable:
+            tableName: providers
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: website
+                  type: varchar(255)
+
+        # ----------------- DOCUMENTS -------------------
+        - createTable:
+            tableName: documents
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: file
+                  type: varchar(500)
+                  constraints:
+                    nullable: false
+
+        # ----------------- ATTEMPTS -------------------
+        - createTable:
+            tableName: attempts
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_attempt_user
+                    references: users(id)
+              - column:
+                  name: attempt_date
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: provider_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_attempt_provider
+                    references: providers(id)
+              - column:
+                  name: result_percentage
+                  type: decimal(5,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: approval
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: document_id
+                  type: UUID
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_attempt_document
+                    references: documents(id)
+
+        # ----------------- OAUTH2 CLIENTS -------------------
         - createTable:
             tableName: oauth2_registered_client
             columns:
@@ -84,6 +180,7 @@ databaseChangeLog:
                   type: varchar(100)
                   constraints:
                     nullable: false
+                    unique: true
               - column:
                   name: client_id_issued_at
                   type: timestamp
@@ -118,6 +215,7 @@ databaseChangeLog:
                   name: token_settings
                   type: varchar(2000)
 
+        # ----------------- SPRING MODULITH EVENT STORAGE -------------------
         - createTable:
             tableName: event_publication
             columns:

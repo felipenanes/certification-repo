@@ -10,7 +10,9 @@ import org.springframework.security.oauth2.server.authorization.client.JdbcRegis
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
+import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 
+import java.time.Duration;
 import java.util.UUID;
 
 @Configuration
@@ -27,11 +29,17 @@ public class AuthorizationServerConfig {
                     .clientId("certification-app")
                     .clientSecret(encodedSecret)
                     .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                    .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                    .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+                    //.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE) - nao faz sentido agora
+                    //.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN) - nao faz sentido agora
+                    .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                     .redirectUri("http://localhost:8080/home")
                     .scope("read")
                     .scope("write")
+                    .tokenSettings(TokenSettings.builder()
+                            .accessTokenTimeToLive(Duration.ofHours(2))
+                            .refreshTokenTimeToLive(Duration.ofDays(30))
+                            .reuseRefreshTokens(true)
+                            .build())
                     .build();
 
             repository.save(client);

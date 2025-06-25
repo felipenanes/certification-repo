@@ -7,6 +7,9 @@ databaseChangeLog:
             tableName: users
             columns:
               - column:
+                  name: id
+                  value: 9f4b2b96-2c6d-4f34-88e1-fc7802652df1
+              - column:
                   name: username
                   value: admin
               - column:
@@ -36,6 +39,9 @@ databaseChangeLog:
         - insert:
             tableName: users
             columns:
+              - column:
+                  name: id
+                  value: 3d1a7ac2-fbb2-4de7-a47a-10e5cf738104
               - column:
                   name: username
                   value: user

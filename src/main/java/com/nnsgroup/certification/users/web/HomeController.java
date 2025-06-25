@@ -1,6 +1,5 @@
 package com.nnsgroup.certification.users.web;
 
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,15 +14,5 @@ public class HomeController {
         } else {
             return "Bem-vindo, visitante!";
         }
-    }
-
-    @GetMapping("/home-auth")
-    public String homeAuth(Authentication auth) {
-        return "Usuário logado: " + auth.getName() + " | Roles: " + auth.getAuthorities();
-    }
-
-    @GetMapping("/test")
-    public String test() {
-        return "Aplicação funcionando!";
     }
 }
