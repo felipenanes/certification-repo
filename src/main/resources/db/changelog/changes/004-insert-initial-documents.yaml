@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004
+      author: system
+      changes:
+        - insert:
+            tableName: documents
+            columns:
+              - column:
+                  name: id
+                  value: 9d12b4cd-a9de-4aaf-9945-1a4428e1f7b3
+              - column:
+                  name: name
+                  value: AWS Certified Cloud Practitioner
+              - column:
+                  name: file
+                  value: https://cp.certmetrics.com/amazon/en/public/verify/credential/7P8J7F7CVFBQQWG3
+        - insert:
+            tableName: documents
+            columns:
+              - column:
+                  name: id
+                  value: 2e5c77a7-9359-42ea-a33b-9c8f5f3518cd
+              - column:
+                  name: name
+                  value: Microsoft Azure Administrator Certification (AZ-103)
+              - column:
+                  name: file
+                  value: https://images.credly.com/size/340x340/images/6c8c20a6-3a86-4146-9f51-75d0d21b7711/42317e93d34840f5bab02b56c171c273-01.png
