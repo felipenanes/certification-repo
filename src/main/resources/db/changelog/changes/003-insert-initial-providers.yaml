@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003
+      author: system
+      changes:
+        - insert:
+            tableName: providers
+            columns:
+              - column:
+                  name: id
+                  value: 5f6c1a70-d781-4d93-9d7e-0fce5d1e1981
+              - column:
+                  name: name
+                  value: AWS
+              - column:
+                  name: website
+                  value: https://providerone.example.com
+        - insert:
+            tableName: providers
+            columns:
+              - column:
+                  name: id
+                  value: 7a12b3a3-56fe-4f89-a356-c94fdbf76f99
+              - column:
+                  name: name
+                  value: Azure
+              - column:
+                  name: website
+                  value: https://providertwo.example.com

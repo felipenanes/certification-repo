@@ -1,0 +1,54 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005
+      author: system
+      changes:
+        - insert:
+            tableName: attempts
+            columns:
+              - column:
+                  name: id
+                  value: f1e8a22a-1849-44a0-9eb3-5f0d4b17cbb2
+              - column:
+                  name: user_id
+                  value: 3d1a7ac2-fbb2-4de7-a47a-10e5cf738104
+              - column:
+                  name: attempt_date
+                  valueDate: 2025-06-20T10:30:00
+              - column:
+                  name: provider_id
+                  value: 5f6c1a70-d781-4d93-9d7e-0fce5d1e1981
+              - column:
+                  name: result_percentage
+                  valueNumeric: 85.50
+              - column:
+                  name: approval
+                  valueBoolean: true
+              - column:
+                  name: document_id
+                  value: 9d12b4cd-a9de-4aaf-9945-1a4428e1f7b3
+
+        - insert:
+            tableName: attempts
+            columns:
+              - column:
+                  name: id
+                  value: e7c34f52-6d21-41a2-b5d2-7cc46f390471
+              - column:
+                  name: user_id
+                  value: 9f4b2b96-2c6d-4f34-88e1-fc7802652df1
+              - column:
+                  name: attempt_date
+                  valueDate: 2025-06-21T14:45:00
+              - column:
+                  name: provider_id
+                  value: 7a12b3a3-56fe-4f89-a356-c94fdbf76f99
+              - column:
+                  name: result_percentage
+                  valueNumeric: 72.00
+              - column:
+                  name: approval
+                  valueBoolean: false
+              - column:
+                  name: document_id
+                  value: 2e5c77a7-9359-42ea-a33b-9c8f5f3518cd

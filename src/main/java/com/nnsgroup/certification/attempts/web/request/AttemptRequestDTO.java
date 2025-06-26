@@ -1,4 +1,4 @@
-package com.nnsgroup.certification.attempts.web.dto;
+package com.nnsgroup.certification.attempts.web.request;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
