@@ -5,7 +5,7 @@
 ### Software Necessário:
 - **Java 17** ou superior
 - **Gradle 8.x** (wrapper incluído)
-- **Docker Desktop** (opcional, para PostgreSQL)
+- **Docker Desktop** (para PostgreSQL)
 - **IDE** (IntelliJ IDEA, Eclipse, VS Code)
 
 ### Ferramentas Recomendadas:
@@ -21,7 +21,7 @@
 java -version
 ```
 
-### 2. Docker Desktop (opcional, para PostgreSQL)
+### 2. Docker Desktop (para PostgreSQL)
 ```bash
 # Baixar e instalar Docker Desktop
 # Iniciar o Docker Desktop
@@ -63,26 +63,23 @@ export PATH=$PATH:$JAVA_HOME/bin
 
 ## 🗄️ Configuração de Banco de Dados
 
-### Opção 1: H2 (Padrão para desenvolvimento)
+### PostgreSQL (Desenvolvimento, Teste e Produção)
+
+#### Iniciar banco de dados:
 ```bash
-# Executar aplicação (cria banco H2 automaticamente)
-./gradlew bootRun
+# Produção
+docker-compose up -d
+# Desenvolvimento/Teste
+docker-compose -f docker-compose-test.yml up -d
 ```
 
-### Opção 2: PostgreSQL (Recomendado para produção e integração)
+#### Executar aplicação com o profile desejado:
 ```bash
-# Iniciar PostgreSQL (produção)
-docker-compose up -d
-
-# Iniciar PostgreSQL (desenvolvimento/teste)
-docker-compose -f docker-compose-test.yml up -d
-
-# Executar aplicação com profile desejado
-# Produção:
+# Produção
 ./gradlew bootRun --args='--spring.profiles.active=prod'
-# Teste:
+# Teste
 ./gradlew bootRun --args='--spring.profiles.active=test'
-# Desenvolvimento (padrão):
+# Desenvolvimento (padrão)
 ./gradlew bootRun
 ```
 

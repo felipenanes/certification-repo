@@ -18,10 +18,6 @@
 - **Senha**: `certification_test_pass`
 - **Uso**: Desenvolvimento local e execução de testes
 
-### 3. H2 (Desenvolvimento Local)
-- **Configuração**: `application.yaml`
-- **Uso**: Testes rápidos e desenvolvimento sem Docker
-
 ## Como usar os diferentes ambientes
 
 ### 1. Produção
@@ -42,25 +38,19 @@ docker-compose -f docker-compose-test.yml up -d
 ./gradlew bootRun
 ```
 
-### 3. H2 (Desenvolvimento Local)
-```bash
-# Executar aplicação (cria banco H2 automaticamente)
-./gradlew bootRun
-```
-
-### 4. Acessar o pgAdmin (produção)
+### 3. Acessar o pgAdmin (produção)
 - **URL**: http://localhost:8081
 - **Email**: admin@certification.com
 - **Senha**: admin123
 
-### 5. Conectar ao banco no pgAdmin ou DBeaver
+### 4. Conectar ao banco no pgAdmin ou DBeaver
 - **Host**: localhost
 - **Porta**: 5432 (produção) ou 5433 (dev/teste)
 - **Database**: certification_db ou certification_test_db
 - **Username**: certification_user ou certification_test_user
 - **Password**: certification_pass ou certification_test_pass
 
-### 6. Parar os bancos
+### 5. Parar os bancos
 ```bash
 # Parar banco de produção
 docker-compose down
@@ -70,7 +60,7 @@ docker-compose -f docker-compose-test.yml down
 docker-compose down && docker-compose -f docker-compose-test.yml down
 ```
 
-### 7. Ver logs dos bancos
+### 6. Ver logs dos bancos
 ```bash
 # Logs do banco de produção
 docker-compose logs postgres
