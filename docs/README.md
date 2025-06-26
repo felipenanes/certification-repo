@@ -5,7 +5,7 @@ Esta pasta contém toda a documentação técnica e guias do projeto, alinhados 
 ## 📁 Estrutura de Pastas
 
 ### 🗄️ `database/` - Documentação de Banco de Dados
-- **DATABASE_SETUP.md** - Setup e uso dos bancos de dados (PostgreSQL e H2)
+- **DATABASE_SETUP.md** - Setup e uso do banco de dados PostgreSQL
 - **DBeaver_Connection_Guide.md** - Guia para conectar no DBeaver
 
 ### 🔐 `security/` - Documentação de Segurança

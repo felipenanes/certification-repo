@@ -46,32 +46,6 @@ docker-compose -f docker-compose-test.yml up -d
 1. **Clique em "Finish"**
 2. **A conexão aparecerá na árvore de conexões**
 
-## 🗄️ Conectando ao H2 (Banco local)
-
-### Passo 1: Verificar se o banco H2 existe
-O arquivo deve estar em: `./data/dev-db.mv.db`
-
-### Passo 2: Criar nova conexão no DBeaver
-
-1. **Clique em "Nova Conexão"**
-2. **Selecione "H2"**
-3. **Clique em "Próximo"**
-
-### Passo 3: Configurar parâmetros
-
-**Configurações principais:**
-- **Path**: `C:\Users\felip\Desktop\Documentos\certification\data\dev-db`
-- **User**: `sa`
-- **Password**: (deixe em branco)
-
-**Configurações avançadas:**
-- **Driver**: `org.h2.Driver`
-- **URL**: `jdbc:h2:file:./data/dev-db`
-
-### Passo 4: Testar e conectar
-1. **Clique em "Test Connection"**
-2. **Clique em "Finish"**
-
 ## 🔍 Explorando as Tabelas
 
 ### Tabelas principais:
@@ -110,11 +84,9 @@ WHERE table_name = 'users';
 ### Erro: "Authentication failed"
 - Verifique username/password
 - Para PostgreSQL: `certification_user`/`certification_pass` (produção) ou `certification_test_user`/`certification_test_pass` (dev/teste)
-- Para H2: `sa` / (vazio)
 
 ### Erro: "Database not found"
 - Para PostgreSQL: verifique se o nome é `certification_db` (produção) ou `certification_test_db` (dev/teste)
-- Para H2: verifique se o arquivo `dev-db.mv.db` existe
 
 ### Erro: "Driver not found"
 - Baixe o driver PostgreSQL no DBeaver
@@ -123,6 +95,5 @@ WHERE table_name = 'users';
 ## 📊 Dicas
 
 1. **Use o PostgreSQL** para desenvolvimento mais robusto
-2. **Use o H2** para testes rápidos
-3. **Sempre teste a conexão** antes de usar
-4. **Salve as configurações** para reutilizar depois 
+2. **Sempre teste a conexão** antes de usar
+3. **Salve as configurações** para reutilizar depois 
