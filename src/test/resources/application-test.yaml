@@ -19,15 +19,24 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
   liquibase:
-    clear-checksums: true
-    change-log: classpath:db/changelog/db.changelog-master.yaml
-    enabled: true
+    enabled: false
+
+  modulith:
+    events:
+      publication:
+        enabled: false
+    modules:
+      enabled: false
+
+  autoconfigure:
+    exclude:
+      - org.springframework.modulith.autoconfigure.ModulithAutoConfiguration
 
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:9999
+          jwk-set-uri: http://localhost:8080/oauth2/jwks
 
   logging:
     level:
