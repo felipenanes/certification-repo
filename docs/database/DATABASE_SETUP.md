@@ -31,7 +31,7 @@ docker-compose up -d
 ### 2. Desenvolvimento/Teste
 ```bash
 # Iniciar banco de desenvolvimento/teste
-docker-compose -f docker-compose-test.yml up -d
+docker-compose -f compose-test.yml up -d
 # Executar aplicação (profile de teste)
 ./gradlew bootRun --args='--spring.profiles.active=test'
 # Ou executar aplicação (profile padrão)
@@ -55,9 +55,9 @@ docker-compose -f docker-compose-test.yml up -d
 # Parar banco de produção
 docker-compose down
 # Parar banco de desenvolvimento/teste
-docker-compose -f docker-compose-test.yml down
+docker-compose -f compose-test.yml down
 # Parar todos
-docker-compose down && docker-compose -f docker-compose-test.yml down
+docker-compose down && docker-compose -f compose-test.yml down
 ```
 
 ### 6. Ver logs dos bancos
@@ -65,7 +65,7 @@ docker-compose down && docker-compose -f docker-compose-test.yml down
 # Logs do banco de produção
 docker-compose logs postgres
 # Logs do banco de desenvolvimento/teste
-docker-compose -f docker-compose-test.yml logs postgres-test
+docker-compose -f compose-test.yml logs postgres-test
 ```
 
 ## Tabelas Criadas pelo Liquibase
@@ -120,7 +120,7 @@ netstat -ano | findstr :5432
 netstat -ano | findstr :5433
 # Parar containers existentes
 docker-compose down
-docker-compose -f docker-compose-test.yml down
+docker-compose -f compose-test.yml down
 ```
 
 ### Erro: "Database not found"
@@ -131,17 +131,17 @@ docker-compose -f docker-compose-test.yml down
 ```bash
 # Ver logs detalhados
 docker-compose logs postgres
-docker-compose -f docker-compose-test.yml logs postgres-test
+docker-compose -f compose-test.yml logs postgres-test
 # Reiniciar containers
 docker-compose restart postgres
-docker-compose -f docker-compose-test.yml restart postgres-test
+docker-compose -f compose-test.yml restart postgres-test
 ```
 
 ### Limpeza completa
 ```bash
 # Parar e remover todos os containers e volumes
 docker-compose down -v
-docker-compose -f docker-compose-test.yml down -v
+docker-compose -f compose-test.yml down -v
 # Limpar volumes não utilizados
 docker volume prune
 ``` 
