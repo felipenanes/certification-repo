@@ -63,8 +63,14 @@ liquibase {
 			username project.findProperty('liquibaseDbUser') ?: 'postgres'
 			password project.findProperty('liquibaseDbPass') ?: 'postgres'
 		}
+		test {
+			changelogFile 'src/main/resources/db/changelog/db.changelog-master.yaml'
+			url project.findProperty('liquibaseTestDbUrl') ?: 'jdbc:postgresql://localhost:5433/certification'
+			username project.findProperty('liquibaseTestDbUser') ?: 'postgres'
+			password project.findProperty('liquibaseTestDbPass') ?: 'postgres'
+		}
 	}
-	runList = 'main'
+	runList = project.findProperty('liquibaseRunList') ?: 'main'
 }
 
 dependencyManagement {

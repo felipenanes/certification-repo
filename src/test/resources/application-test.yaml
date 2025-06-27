@@ -5,10 +5,10 @@ spring:
     banner-mode: console
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/certification_db
+    url: jdbc:postgresql://localhost:5433/certification_test_db
     driver-class-name: org.postgresql.Driver
-    username: certification_user
-    password: certification_pass
+    username: certification_test_user
+    password: certification_test_pass
   jpa:
     hibernate:
       ddl-auto: create-drop
