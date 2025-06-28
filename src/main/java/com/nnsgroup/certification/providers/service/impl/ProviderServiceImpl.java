@@ -1,6 +1,7 @@
 package com.nnsgroup.certification.providers.service.impl;
 
 import com.nnsgroup.certification.providers.domain.Provider;
+import com.nnsgroup.certification.providers.exception.ProviderNotFoundException;
 import com.nnsgroup.certification.providers.repository.ProviderRepository;
 import com.nnsgroup.certification.providers.service.ProviderService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class ProviderServiceImpl implements ProviderService {
     @Override
     public Provider getById(UUID id) {
         return providerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Provider not found"));
+                .orElseThrow(() -> new ProviderNotFoundException(id));
     }
 
     @Override
