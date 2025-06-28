@@ -34,10 +34,10 @@ Este projeto utiliza Docker para facilitar o desenvolvimento e deploy do banco d
 docker-compose up -d
 
 # Desenvolvimento/Teste (PostgreSQL)
-docker-compose -f docker-compose-test.yml up -d
+docker-compose -f compose-test.yml up -d
 
 # Versão simples (apenas PostgreSQL)
-docker-compose -f docker-compose-simple.yml up -d
+docker-compose -f compose-dev.yml up -d
 ```
 
 ### Parar Serviços:
@@ -46,10 +46,10 @@ docker-compose -f docker-compose-simple.yml up -d
 docker-compose down
 
 # Desenvolvimento/Teste
-docker-compose -f docker-compose-test.yml down
+docker-compose -f compose-test.yml down
 
 # Simples
-docker-compose -f docker-compose-simple.yml down
+docker-compose -f compose-dev.yml down
 ```
 
 ### Ver Logs:

@@ -13,7 +13,7 @@
 # Produção (porta 5432)
 docker-compose up -d
 # Desenvolvimento/Teste (porta 5433)
-docker-compose -f docker-compose-test.yml up -d
+docker-compose -f compose-test.yml up -d
 ```
 
 ### Passo 2: Criar nova conexão no DBeaver

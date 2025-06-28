@@ -70,7 +70,7 @@ export PATH=$PATH:$JAVA_HOME/bin
 # Produção
 docker-compose up -d
 # Desenvolvimento/Teste
-docker-compose -f docker-compose-test.yml up -d
+docker-compose -f compose-test.yml up -d
 ```
 
 #### Executar aplicação com o profile desejado:
