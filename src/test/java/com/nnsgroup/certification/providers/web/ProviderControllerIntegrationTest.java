@@ -11,6 +11,7 @@ import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
@@ -107,22 +108,23 @@ class ProviderControllerIntegrationTest {
     @Test
     void testGetProvider_NotFound() {
         String token = getAccessToken();
-
         UUID nonExistentId = UUID.randomUUID();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(token);
-
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
-        ResponseEntity<String> response = restTemplate.exchange(
-                "http://localhost:" + port + "/providers/" + nonExistentId,
-                HttpMethod.GET,
-                entity,
-                String.class
-        );
-
-        // O controller lança RuntimeException, então retorna 500
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        try {
+            restTemplate.exchange(
+                    "http://localhost:" + port + "/providers/" + nonExistentId,
+                    HttpMethod.GET,
+                    entity,
+                    String.class
+            );
+            fail("Expected HttpClientErrorException.NotFound");
+        } catch (HttpClientErrorException.NotFound ex) {
+            assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+            assertTrue(ex.getResponseBodyAsString().contains("Provider not found"));
+        }
     }
 }

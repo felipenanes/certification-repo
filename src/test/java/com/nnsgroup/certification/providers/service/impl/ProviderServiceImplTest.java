@@ -49,7 +49,7 @@ class ProviderServiceImplTest {
     void testGetById_NotFound() {
         when(providerRepository.findById(providerId)).thenReturn(Optional.empty());
         Exception exception = assertThrows(RuntimeException.class, () -> providerService.getById(providerId));
-        assertEquals("Provider not found", exception.getMessage());
+        assertEquals(String.format("Provider not found: %s", providerId), exception.getMessage());
     }
 
     @Test
