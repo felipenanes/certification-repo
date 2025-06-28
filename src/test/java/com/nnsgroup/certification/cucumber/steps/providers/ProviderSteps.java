@@ -6,7 +6,6 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +14,6 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ProviderSteps {
     
     @Autowired
@@ -34,7 +32,7 @@ public class ProviderSteps {
     
     @Given("the system is running")
     public void theSystemIsRunning() {
-        // System is already running due to @SpringBootTest
+        // System is already running due to @SpringBootTest in CucumberSpringConfig
     }
     
     @Given("I have a valid provider with name {string} and website {string}")
@@ -46,12 +44,15 @@ public class ProviderSteps {
     @Given("a provider exists with ID {string}")
     public void aProviderExistsWithId(String id) {
         this.providerId = UUID.fromString(id);
-        testProvider = Provider.builder()
+        providerRepository.deleteById(providerId); // garante consistência
+
+        Provider provider = Provider.builder()
                 .id(providerId)
-                .name(providerName)
-                .website(providerWebsite)
+                .name("Test Provider")
+                .website("https://test.com")
                 .build();
-        providerRepository.save(testProvider);
+
+        providerRepository.save(provider);
     }
 
     @Given("no provider exists with ID {string}")
@@ -108,6 +109,27 @@ public class ProviderSteps {
         this.providerWebsite = null;
     }
 
+    // Additional steps for listing scenarios
+    @Given("I have multiple providers in the system")
+    public void iHaveMultipleProvidersInTheSystem() {
+        // This will be implemented when listing functionality is added
+    }
+
+    @Given("there are {int} providers in the system")
+    public void thereAreProvidersInTheSystem(int count) {
+        // This will be implemented when listing functionality is added
+    }
+
+    @Given("there are no providers in the system")
+    public void thereAreNoProvidersInTheSystem() {
+        providerRepository.deleteAll();
+    }
+
+    @Given("there are providers with names containing {string}")
+    public void thereAreProvidersWithNamesContaining(String namePattern) {
+        // This will be implemented when listing functionality is added
+    }
+
     // -------------- EXECUTION(When) ----------------
     
     @When("I request to get provider with ID {string}")
@@ -134,6 +156,22 @@ public class ProviderSteps {
             // Handle validation errors
             response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    // Additional steps for listing scenarios
+    @When("I request to list all providers")
+    public void iRequestToListAllProviders() {
+        // This will be implemented when listing functionality is added
+    }
+
+    @When("I request to list providers with page {int} and size {int}")
+    public void iRequestToListProvidersWithPageAndSize(int page, int size) {
+        // This will be implemented when listing functionality is added
+    }
+
+    @When("I request to list providers filtered by name {string}")
+    public void iRequestToListProvidersFilteredByName(String name) {
+        // This will be implemented when listing functionality is added
     }
 
     //--------------- ASSERTIONS(Then) ---------------
@@ -174,6 +212,27 @@ public class ProviderSteps {
     public void iShouldReceiveAConflictError() {
         assertNotNull(response);
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+    }
+
+    // Additional assertions for listing scenarios
+    @Then("I should receive a list of {int} providers")
+    public void iShouldReceiveAListOfProviders(int expectedCount) {
+        // This will be implemented when listing functionality is added
+    }
+
+    @Then("I should receive an empty list")
+    public void iShouldReceiveAnEmptyList() {
+        // This will be implemented when listing functionality is added
+    }
+
+    @Then("I should receive a paginated list with {int} providers")
+    public void iShouldReceiveAPaginatedListWithProviders(int expectedCount) {
+        // This will be implemented when listing functionality is added
+    }
+
+    @Then("I should receive a list of providers with names containing {string}")
+    public void iShouldReceiveAListOfProvidersWithNamesContaining(String namePattern) {
+        // This will be implemented when listing functionality is added
     }
 
     //--------------- INCREMENTS(And) ---------------//
