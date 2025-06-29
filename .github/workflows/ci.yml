@@ -21,5 +21,8 @@ jobs:
       - name: Dar permissão ao Gradle
         run: chmod +x gradlew
 
+      - name: Subir PostgreSQL com Docker Compose
+        run: docker-compose -f compose-test.yml up -d
+
       - name: Build e Teste
         run: ./gradlew build --no-daemon
