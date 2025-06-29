@@ -1,6 +1,7 @@
 package com.nnsgroup.certification.documents.service.impl;
 
 import com.nnsgroup.certification.documents.domain.Document;
+import com.nnsgroup.certification.documents.exception.DocumentNotFoundException;
 import com.nnsgroup.certification.documents.repository.DocumentRepository;
 import com.nnsgroup.certification.documents.service.DocumentService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public Document getById(UUID id) {
         return documentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Document not found"));
+                .orElseThrow(() -> new DocumentNotFoundException(id));
     }
 
     @Override

@@ -20,8 +20,8 @@ public class DocumentController {
     private final DocumentService documentService;
 
     @GetMapping("/{documentId}")
-    public Document getProvider(@PathVariable UUID providerId) {
-        return documentService.getById(providerId);
+    public Document getProvider(@PathVariable UUID documentId) {
+        return documentService.getById(documentId);
     }
 
     @PostMapping

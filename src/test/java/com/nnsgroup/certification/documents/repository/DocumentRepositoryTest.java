@@ -1,6 +1,6 @@
-package com.nnsgroup.certification.providers.repository;
+package com.nnsgroup.certification.documents.repository;
 
-import com.nnsgroup.certification.providers.domain.Provider;
+import com.nnsgroup.certification.documents.domain.Document;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -18,41 +18,41 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DataJpaTest
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class ProviderRepositoryTest {
+class DocumentRepositoryTest {
 
     @Autowired
-    private ProviderRepository providerRepository;
+    private DocumentRepository documentRepository;
 
-    Provider provider = Provider.builder()
-            .name("Test Provider")
-            .website("https://test.com")
+    Document document = Document.builder()
+            .name("AWS Certified Cloud Practitioner")
+            .fileUrl("https://cp.certmetrics.com/amazon/en/public/verify/credential/7P8J7F7CVFBQQWG3")
             .build();
 
     @Test
     void testSaveAndFindById() {
-        Provider saved = providerRepository.save(provider);
-        
-        assertNotNull(saved.getId());
-        assertEquals("Test Provider", saved.getName());
+        Document saved = documentRepository.save(document);
 
-        Optional<Provider> found = providerRepository.findById(saved.getId());
+        assertNotNull(saved.getId());
+        assertEquals("AWS Certified Cloud Practitioner", saved.getName());
+
+        Optional<Document> found = documentRepository.findById(saved.getId());
         assertTrue(found.isPresent());
         assertEquals(saved.getId(), found.get().getId());
-        assertEquals("Test Provider", found.get().getName());
+        assertEquals("AWS Certified Cloud Practitioner", found.get().getName());
     }
 
     @Test
     void testFindById_NotFound() {
         UUID nonExistentId = UUID.randomUUID();
-        Optional<Provider> found = providerRepository.findById(nonExistentId);
+        Optional<Document> found = documentRepository.findById(nonExistentId);
         assertFalse(found.isPresent());
     }
 
     @Test
     void testSave_WithId() {
-        Provider saved = providerRepository.save(provider);
-        
-        assertEquals(provider.getId(), saved.getId());
-        assertEquals("Test Provider", saved.getName());
+        Document saved = documentRepository.save(document);
+
+        assertEquals(document.getId(), saved.getId());
+        assertEquals("AWS Certified Cloud Practitioner", saved.getName());
     }
 } 
